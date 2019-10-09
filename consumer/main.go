@@ -5,8 +5,7 @@ import (
 	"log"
 	"os"
 
-	"../shared"
-		
+	"github.com/icarus3/Collatz/shared"
 	"github.com/streadway/amqp"
 )
 
