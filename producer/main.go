@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"math"
+	"fmt"
+	"time"
 
 	"github.com/icarus3/Collatz/shared"		
 	"github.com/streadway/amqp"
@@ -15,8 +17,23 @@ func handleError(err error, msg string) {
 	}
 }
 
+func retryConn() (*amqp.Connection, error) {
+	retry := 10
+	for retry > 0 {
+		conn, err := amqp.Dial(shared.RabbitMQUrl)
+		if err == nil {
+			return conn, err
+		}
+
+		retry = retry - 1
+		time.Sleep(5 * time.Second)
+	}
+
+	return nil, fmt.Errorf("connection timeout")
+}
+
 func main() {
-	conn, err := amqp.Dial(shared.RabbitMQUrl)
+	conn, err := retryConn()
 	handleError(err, "Can't connect to AMQ")
 	defer conn.Close()
 

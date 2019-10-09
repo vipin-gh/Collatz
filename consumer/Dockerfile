@@ -5,9 +5,9 @@ LABEL description="consumer image, which pushes the numbers into RabbitMQ"
 
 WORKDIR /app
 
-COPY go.mod go.sum main.go ./
+COPY main.go ./
 
-RUN go mod download
+RUN go get -d ./...
 
 RUN go build -o main .
 

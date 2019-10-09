@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"time"
 
 	"github.com/icarus3/Collatz/shared"
 	"github.com/streadway/amqp"
@@ -16,6 +17,9 @@ func handleError(err error, msg string) {
 }
 
 func main() {
+
+	time.Sleep(20 * time.Second)
+
 	conn, err := amqp.Dial(shared.RabbitMQUrl)
 	handleError(err, "Can't connect to AMQ")
 	defer conn.Close()
