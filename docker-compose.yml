@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+    networks:
+      - backend
+  producer:
+    image: collatz-producer:latest
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    networks:
+      - backend
+  consumer:
+    image: collatz-consumer:latest
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    networks:
+      - backend
+networks:
+  backend:
+    driver: "bridge"
+
